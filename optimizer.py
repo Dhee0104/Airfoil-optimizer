@@ -24,8 +24,7 @@ def get_airfoil_performance(max_camber, camber_pos, thickness):
     predicted_cl = model_cl.predict(input_scaled)[0]
     predicted_cd_log = model_cd.predict(input_scaled)[0]
     predicted_cd = 10**predicted_cd_log
-    if predicted_cd <= 0.005:
-        return 0.005
+    predicted_cd = max(predicted_cd, .005)
     print("Predicted CL:", predicted_cl, "Predicted CD:", predicted_cd)
     return -predicted_cl / predicted_cd
 
