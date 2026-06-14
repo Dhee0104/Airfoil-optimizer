@@ -4,12 +4,12 @@ from unifiedairfoilgenerator import unifiedairfoilgenerator
 
 data = []
 airfoil_gen = unifiedairfoilgenerator()
-while len(data) < 1000:
+while len(data) < 10000:
     max_camber = round(random.uniform(0, 0.1), 3)
     camber_pos = round(random.uniform(0.1, 0.8),3)
     thickness = round(random.uniform(0.05, 0.2),3)
-    reynolds = random.randint(100000, 5000000)
-    aoa = round(random.uniform(-5, 12), 1)
+    reynolds = random.randint(100000, 1000000)
+    aoa = round(random.uniform(-5, 15), 1)
     try:
         x, y = airfoil_gen.generate_airfoil(max_camber, camber_pos, thickness)
         cl, cd = airfoil_gen.run_xfoil_automated(reynolds, aoa)
