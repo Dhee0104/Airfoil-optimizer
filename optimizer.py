@@ -24,8 +24,8 @@ def get_airfoil_performance(max_camber, camber_pos, thickness):
     predicted_cl = model_cl.predict(input_scaled)[0]
     predicted_cd_log = model_cd.predict(input_scaled)[0]
     predicted_cd = 10**predicted_cd_log
-    if predicted_cd <= 0.0001:
-        return 0
+    if predicted_cd <= 0.005:
+        return 0.005
     print("Predicted CL:", predicted_cl, "Predicted CD:", predicted_cd)
     return -predicted_cl / predicted_cd
 
@@ -38,7 +38,7 @@ def get_airfoil_performance_cl_only(max_camber, camber_pos, thickness):
     return -predicted_cl
 
 print("optimizing")
-res = gp_minimize(func=get_airfoil_performance_cl_only, dimensions=space, n_calls=100, n_random_starts=10, random_state=42)
+res = gp_minimize(func=get_airfoil_performance, dimensions=space, n_calls=100, n_random_starts=10, random_state=42)
 
 optimal_max_camber, optimal_camber_pos, optimal_thickness = res.x
 max_cl_cd = -res.fun
