@@ -1,0 +1,14 @@
+load C:\Users\Dheem\Documents\GitHub\AirfoilOptimizer\NACA_2412.dat
+ppar
+n 100
+
+
+oper
+mach 0
+visc 100000
+alfa 5
+dump C:\Users\Dheem\Documents\GitHub\AirfoilOptimizer\NACA_2412_198_5_0_100000.res
+mach 0.0
+visc
+
+quit

@@ -91,4 +91,4 @@ def evaluate_airfoil(max_camber, camber_pos, thickness, reynolds, aoa, datfile="
 
 x, y = generate_airfoil(0.02, 0.4, 0.12, filepath="NACA_2412.dat")
 plot_airfoil(x, y)
-evaluate_airfoil(0.02, 0.4, 0.12, datfile="NACA_2412.dat", reynolds=2e5, aoa=5.0)
+# evaluate_airfoil(0.02, 0.4, 0.12, datfile="NACA_2412.dat", reynolds=200000.0, aoa=5.0)
