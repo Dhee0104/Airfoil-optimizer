@@ -50,45 +50,6 @@ def plot_airfoil(x, y, title="Airfoil Profile"):
     plt.legend()
     plt.show()
 
-def evaluate_airfoil(max_camber, camber_pos, thickness, reynolds, aoa, datfile="temp_airfoil.dat", num_points=100):
-    try:
-        x,y = generate_airfoil(max_camber, camber_pos, thickness, filepath=datfile, num_points=num_points) #create the airfoil dat file
-        print("retrieved airfoil coords")
-    except Exception as e:
-        print("Error getting airfoil cords")
-        return None, None, None, False
-
-    try:
-        xfoil = Xfoil(datfile)
-        print("initialized xfoil")
-        xfoil.points_from_dat(datfile)
-        print("found points")
-        xfoil.set_ppar(num_points)
-        print("panel parameters set")
-        result = xfoil.run_result(alfa=aoa, mach=0.0, Re=reynolds)
-        print("found results")
-
-        if os.path.exists(datfile): 
-            os.remove(datfile)
-
-        if result is None or 'Cl' not in result or 'Cd' not in result:
-            print("Error: solution did not converge or results are missing.")
-            return None, None, None, False
-        cd = result['Cd']
-        cl = result['Cl'] 
-        if cd > 0: 
-            clcd = cl / cd
-            return cl, cd, clcd, True
-        else: 
-            clcd = None
-            print ("Error: Cd is zero or negative, cannot calculate Cl/Cd ratio.")
-            return None, None, None, False
-    except Exception:
-        print ("Error: unable to run")
-        if os.path.exists(datfile):
-            os.remove(datfile)
-        return None, None, None, False
 
 x, y = generate_airfoil(0.02, 0.4, 0.12, filepath="NACA_2412.dat")
 plot_airfoil(x, y)
-# evaluate_airfoil(0.02, 0.4, 0.12, datfile="NACA_2412.dat", reynolds=200000.0, aoa=5.0)

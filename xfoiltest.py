@@ -2,7 +2,7 @@ import os
 import subprocess
 import time
 
-def run_xfoil_automated(max_camber, camber_pos, thickness, reynolds, aoa, xfoil_exe = r"C:\Users\Dheem\Documents\XFOIL6.99\xfoil.exe", dat_file = "temp_airfoil.dat"):
+def run_xfoil_automated( reynolds, aoa, xfoil_exe = r"C:\Users\Dheem\Documents\XFOIL6.99\xfoil.exe", dat_file = "temp_airfoil.dat"):
     res_file = "simulation_output.res"
     input_file = "xfoil_input.txt"
     
@@ -12,10 +12,10 @@ def run_xfoil_automated(max_camber, camber_pos, thickness, reynolds, aoa, xfoil_
     if os.path.exists(input_file):
         os.remove(input_file)
         
-    # ppar, 500 panels, operations, viscous, reynolds, iterations, polar accumulation, aoa, pacc off, quit
+    # ppar, 160 panels, operations, viscous, reynolds, iterations, polar accumulation, aoa, pacc off, quit
     commands = f"""load {dat_file}
         ppar
-        n 500
+        n 160
 
 
         oper
@@ -57,4 +57,4 @@ def run_xfoil_automated(max_camber, camber_pos, thickness, reynolds, aoa, xfoil_
         print("Error: res file was not generated or is empty.")
 
 # Run a test calculation matching your manual parameters
-run_xfoil_automated(0.02, 0.4, 0.12, 500000, 0.0, dat_file="NACA_2412.dat")
+run_xfoil_automated(500000, 0.0, dat_file="NACA_2412.dat")
