@@ -1,7 +1,7 @@
   
        XFOIL         Version 6.99
   
- Calculated polar for: NACA_2412                                       
+ Calculated polar for: NACA_4510                                       
   
  1 1 Reynolds number fixed          Mach number fixed         
   
@@ -10,4 +10,4 @@
   
    alpha    CL        CD       CDp       CM     Top_Xtr  Bot_Xtr
   ------ -------- --------- --------- -------- -------- --------
-   5.000   0.8253   0.01069   0.00461  -0.0554   0.4329   1.0000
+   5.000   1.1204   0.01011   0.00502  -0.1399   0.6328   1.0000
