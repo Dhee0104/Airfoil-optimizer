@@ -11,9 +11,9 @@ scaler = joblib.load("airfoil_scaler.pkl")
 target_aoa = float(input("Enter target angle of attack (AOA) in degrees: "))
 target_reynolds = float(input("Enter target Reynolds number: "))
 space = [
-    Real(0, 0.1, name='max_camber'),
-    Real(0.1, 0.8, name='camber_pos'),
-    Real(0.07, 0.2, name='thickness')
+    Real(0, 0.05, name='max_camber'),
+    Real(0.2, 0.7, name='camber_pos'),
+    Real(0.08, 0.15, name='thickness')
 ]
 log_reynolds = np.log10(target_reynolds)
 
