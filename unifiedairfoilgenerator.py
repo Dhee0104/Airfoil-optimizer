@@ -60,7 +60,7 @@ class unifiedairfoilgenerator:
             f"n 160\n\n\n"
             f"oper\n"
             f"v\n{reynolds}\n"
-            f"iter 100\n"
+            f"iter 500\n"
             f"pacc\n"
             f"{self.res_file}\n\n"
             f"alfa {aoa}\n"
