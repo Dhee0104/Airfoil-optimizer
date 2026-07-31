@@ -55,17 +55,20 @@ class unifiedairfoilgenerator:
             
         # ppar, 160 panels, operations, viscous, reynolds, iterations, polar accumulation, aoa, pacc off, quit
         commands = (
-            f"load {dat_file}\n"
-            f"ppar\n"
-            f"n 160\n\n\n"
-            f"oper\n"
-            f"v\n{reynolds}\n"
-            f"iter 500\n"
-            f"pacc\n"
-            f"{self.res_file}\n\n"
-            f"alfa {aoa}\n"
-            f"pacc\n"
-            f"quit\n")
+        f"load {dat_file}\n"
+        f"ppar\n"
+        f"n 200\n"       
+        f"\n\n"          
+        f"pane\n"        
+        f"oper\n"
+        f"v\n{reynolds}\n"
+        f"iter 500\n"
+        f"pacc\n"
+        f"{self.res_file}\n\n"
+        f"alfa {aoa}\n"
+        f"pacc\n"
+        f"quit\n"
+        )
         
         # puit commands in a text file
         with open(self.input_file, "w") as f:
@@ -74,7 +77,7 @@ class unifiedairfoilgenerator:
         # run xfoil
         try:
             with open(self.input_file, "r") as f:
-                process = subprocess.run([self.xfoil_exe],stdin=f,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=5)
+                process = subprocess.run([self.xfoil_exe],stdin=f,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=20)
         except subprocess.TimeoutExpired:
             print("Error: xfoil timed out.")
             return None
