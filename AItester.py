@@ -13,7 +13,7 @@ camber_pos = 0.6429
 thickness = .1141
 ai_cl = model_cl.predict(scaler.transform([[max_camber, camber_pos, thickness, target_reynolds, target_aoa]]))[0]
 ai_cd = model_cd.predict(scaler.transform([[max_camber, camber_pos, thickness, target_reynolds, target_aoa]]))[0]
-ai_cd = 10**ai_cd
+ai_cd = np.exp(ai_cd)
 airfoil_gen.generate_airfoil(max_camber, camber_pos, thickness)
 xfoil_cl, xfoil_cd = airfoil_gen.run_xfoil_automated(target_reynolds, target_aoa)
 print("AI Predicted CL:", ai_cl, "AI Predicted CD:", ai_cd, "AI Predicted CL/CD:", ai_cl/ai_cd)

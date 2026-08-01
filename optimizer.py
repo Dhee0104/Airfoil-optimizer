@@ -1,6 +1,6 @@
 import numpy as np
 import joblib
-from skopt import gp_minimize
+from skopt import forest_minimize
 from skopt.space import Real
 from skopt.utils import use_named_args
 import matplotlib.pyplot as plt
@@ -28,8 +28,8 @@ class AirfoilOptimizer:
             input_scaled = self.scaler.transform(input_features)
             predicted_cl = self.model_cl.predict(input_scaled)[0]
             predicted_cd_log = self.model_cd.predict(input_scaled)[0]
-            predicted_cd = 10**predicted_cd_log
-            predicted_cd = max(predicted_cd, .005)
+            predicted_cd = np.exp(predicted_cd_log)
+            predicted_cd = max(predicted_cd, 0.005)
             # print("Predicted CL:", predicted_cl, "Predicted CD:", predicted_cd)
             return -predicted_cl / predicted_cd
 
@@ -43,8 +43,13 @@ class AirfoilOptimizer:
 
 
         print("optimizing")
-        res = gp_minimize(func=get_airfoil_performance, dimensions=self.space, n_calls=100, n_random_starts=50, kappa =5.0, random_state=42)
-
+        res = forest_minimize(
+            func=get_airfoil_performance, 
+            dimensions=self.space, 
+            n_calls=60, 
+            n_random_starts=15, 
+            random_state=42
+        )
         optimal_max_camber, optimal_camber_pos, optimal_thickness = res.x
         max_cl_cd = -res.fun
         # print("optimal max camber:", optimal_max_camber)

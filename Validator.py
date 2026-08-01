@@ -13,7 +13,7 @@ airfoil_gen = unifiedairfoilgenerator()
 
 # 2. Generate 10 test conditions
 test_cases = []
-while len(test_cases) < 10:
+while len(test_cases) < 100:
     aoa = round(random.uniform(-4, 8), 1)
     reynolds = round(random.uniform(300000, 1000000), 0)
     test_cases.append((aoa, reynolds))
@@ -29,11 +29,11 @@ for i in range(100):
 print("Generated 100 random airfoils for testing.")
 
 results_list = []
-
+runs = 0
 for case in test_cases:
     aoa = case[0]
     reynolds = case[1]
-    reynolds_log = np.log10(reynolds)
+
     
     # Reset tracking variables per case
     best_gen_LD = -1000
@@ -43,12 +43,12 @@ for case in test_cases:
 
     # EVALUATE RANDOM AIRFOILS AI
     for airfoil in random_airfoils:
-        features = np.array([[airfoil[0], airfoil[1], airfoil[2], reynolds_log, aoa]])
+        features = np.array([[airfoil[0], airfoil[1], airfoil[2], reynolds, aoa]])
         scaled_feat = scaler.transform(features)
         
         cl = model_cl.predict(scaled_feat)[0]
         cd_log = model_cd.predict(scaled_feat)[0]
-        cd = 10**cd_log
+        cd = np.exp(cd_log)
         cd = max(cd, 0.005) #to avoid small drag values that are unrealistic
         
         ld = cl / cd
@@ -83,10 +83,10 @@ for case in test_cases:
     ai_opt_airfoil = res.x
     
     # Calculate AI prediction for optimized shape directly from surrogate pipeline
-    opt_feat = scaler.transform(np.array([[ai_opt_airfoil[0], ai_opt_airfoil[1], ai_opt_airfoil[2], reynolds_log, aoa]]))
+    opt_feat = scaler.transform(np.array([[ai_opt_airfoil[0], ai_opt_airfoil[1], ai_opt_airfoil[2], reynolds, aoa]]))
     opt_ai_cl = model_cl.predict(opt_feat)[0]
     opt_ai_cd_log = model_cd.predict(opt_feat)[0]
-    opt_ai_cd = max(10**opt_ai_cd_log, 0.005)
+    opt_ai_cd = max(np.exp(opt_ai_cd_log), 0.005)
     opt_ai_ld = opt_ai_cl / opt_ai_cd
 
     print("AI Optimized     -> Params:", [round(p,4) for p in ai_opt_airfoil],  "CL:", round(opt_ai_cl, 4), "CD:", round(opt_ai_cd, 5), "L/D:", round(opt_ai_ld, 2))
@@ -145,6 +145,8 @@ for case in test_cases:
         # Final Advantage
         "opt_vs_rnd_xfoil_pct_diff": round(opt_vs_rnd_pct_diff, 2) if not np.isnan(opt_vs_rnd_pct_diff) else np.nan
     })
+    runs += 1
+    print("Runs completed:", runs, "out of", len(test_cases))
 
 #  SAVE TO CSV ---
 df_results = pd.DataFrame(results_list)

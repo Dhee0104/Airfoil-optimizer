@@ -11,7 +11,7 @@ df = pd.read_csv("airfoil_dataset.csv")
 
 X = df[["max_camber", "camber_pos", "thickness", "reynolds", "aoa"]].values
 y_cl = df["cl"].values
-y_cd_log = np.log10(df["cd"].values) # Using consistent base-10 log
+y_cd_log = np.log(df["cd"].values) 
 
 Y_combined = np.column_stack((y_cl, y_cd_log))
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y_combined, test_size=0.2, random_state=42)
