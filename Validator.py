@@ -63,8 +63,11 @@ for case in test_cases:
 
     #  XFOIL GROUND-TRUTH FOR BEST RANDOM
     airfoil_gen.generate_airfoil(best_gen_airfoil[0], best_gen_airfoil[1], best_gen_airfoil[2])
-    rnd_xfoil_cl, rnd_xfoil_cd = airfoil_gen.run_xfoil_automated(reynolds, aoa)
-    
+    try:
+        rnd_xfoil_cl, rnd_xfoil_cd = airfoil_gen.run_xfoil_automated(reynolds, aoa)
+    except:
+        rnd_xfoil_cl, rnd_xfoil_cd = None, None
+
     if rnd_xfoil_cl is not None and rnd_xfoil_cd is not None and rnd_xfoil_cd > 0:
         rnd_xfoil_ld = rnd_xfoil_cl / rnd_xfoil_cd
         print("Best Random (XFOIL) L/D:", round(rnd_xfoil_ld, 2))
@@ -93,8 +96,11 @@ for case in test_cases:
 
     # XFOIL GROUND-TRUTH FOR OPTIMIZED AIRFOIL 
     airfoil_gen.generate_airfoil(ai_opt_airfoil[0], ai_opt_airfoil[1], ai_opt_airfoil[2])
-    opt_xfoil_cl, opt_xfoil_cd = airfoil_gen.run_xfoil_automated(reynolds, aoa)
-    
+    try:
+        opt_xfoil_cl, opt_xfoil_cd = airfoil_gen.run_xfoil_automated(reynolds, aoa)
+    except:
+        opt_xfoil_cl, opt_xfoil_cd = None, None
+
     if opt_xfoil_cl is not None and opt_xfoil_cd is not None and opt_xfoil_cd > 0:
         opt_xfoil_ld = opt_xfoil_cl / opt_xfoil_cd
         print("AI Optimized (XFOIL) L/D:", round(opt_xfoil_ld, 2))
